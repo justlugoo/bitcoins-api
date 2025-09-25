@@ -4,7 +4,10 @@ from sqlalchemy.orm import sessionmaker
 import os
 
 # Configuración de la base de datos
+# En Vercel usamos SQLite en memoria, localmente usamos archivo
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./crypto_api.db")
+if "vercel.app" in os.getenv("VERCEL_URL", ""):
+    DATABASE_URL = "sqlite:///:memory:"
 
 # Crear engine
 engine = create_engine(
