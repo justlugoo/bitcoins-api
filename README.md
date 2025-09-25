@@ -2,6 +2,8 @@
 
 API REST robusta para consultar precios de criptomonedas construida con FastAPI, SQLite y arquitectura clean usando **uv**.
 
+🌐 **API en Vivo:** [https://bitcoins-api.vercel.app/](https://bitcoins-api.vercel.app/)
+
 ## 🏗️ Arquitectura
 
 ```
@@ -28,13 +30,14 @@ app/
 ## 🚀 Características
 
 - ✅ **Arquitectura Clean**: Separación clara de responsabilidades
-- ✅ **Base de datos SQLite**: Persistencia de datos mock
+- ✅ **Base de datos híbrida**: SQLite local, datos mock en Vercel
 - ✅ **FastAPI**: Framework moderno y rápido
 - ✅ **CORS habilitado**: Acceso desde cualquier dispositivo
 - ✅ **Documentación automática**: Swagger UI y ReDoc
 - ✅ **Deploy en Vercel**: Configuración lista para producción
 - ✅ **Manejo de errores**: Respuestas consistentes y descriptivas
 - ✅ **Gestionado con uv**: Gestión moderna de dependencias
+- ✅ **Funciona en producción**: Optimizado para Vercel serverless
 
 ## 📋 Endpoints
 
@@ -119,62 +122,182 @@ La API incluye datos de las siguientes criptomonedas:
 
 ## 🔧 Ejemplos de Uso
 
-### JavaScript/Web
+### 🌐 **URL Base de la API**
+```
+https://bitcoins-api.vercel.app
+```
+
+### 📱 **JavaScript/Web**
 
 ```javascript
 // Obtener precio de Bitcoin
-fetch('https://tu-api.vercel.app/crypto/BTC')
+fetch('https://bitcoins-api.vercel.app/crypto/BTC')
   .then(response => response.json())
   .then(data => console.log(data));
 
 // Top 10 criptomonedas
-fetch('https://tu-api.vercel.app/crypto/top/10')
+fetch('https://bitcoins-api.vercel.app/crypto/top/10')
   .then(response => response.json())
   .then(data => console.log(data));
 
 // Comparar Bitcoin y Ethereum
-fetch('https://tu-api.vercel.app/crypto/compare/BTC/ETH')
+fetch('https://bitcoins-api.vercel.app/crypto/compare/BTC/ETH')
+  .then(response => response.json())
+  .then(data => console.log(data));
+
+// Todas las criptomonedas disponibles
+fetch('https://bitcoins-api.vercel.app/crypto/')
   .then(response => response.json())
   .then(data => console.log(data));
 ```
 
-### Python
+### 🐍 **Python**
 
 ```python
 import requests
 
 # Obtener precio de Bitcoin
-response = requests.get('https://tu-api.vercel.app/crypto/BTC')
+response = requests.get('https://bitcoins-api.vercel.app/crypto/BTC')
 print(response.json())
 
 # Top 5 criptomonedas
-response = requests.get('https://tu-api.vercel.app/crypto/top/5')
+response = requests.get('https://bitcoins-api.vercel.app/crypto/top/5')
+print(response.json())
+
+# Comparar dos criptomonedas
+response = requests.get('https://bitcoins-api.vercel.app/crypto/compare/BTC/ETH')
+print(response.json())
+
+# Todas las criptomonedas
+response = requests.get('https://bitcoins-api.vercel.app/crypto/')
 print(response.json())
 ```
 
-### cURL
+### 💻 **cURL**
 
 ```bash
 # Precio de Bitcoin
-curl https://tu-api.vercel.app/crypto/BTC
+curl https://bitcoins-api.vercel.app/crypto/BTC
 
-# Top 10
-curl https://tu-api.vercel.app/crypto/top/10
+# Top 10 criptomonedas
+curl https://bitcoins-api.vercel.app/crypto/top/10
 
-# Comparar
-curl https://tu-api.vercel.app/crypto/compare/BTC/ETH
+# Comparar Bitcoin y Ethereum
+curl https://bitcoins-api.vercel.app/crypto/compare/BTC/ETH
+
+# Todas las criptomonedas
+curl https://bitcoins-api.vercel.app/crypto/
+```
+
+### 📊 **Respuestas de Ejemplo**
+
+#### **Obtener una criptomoneda:**
+```json
+{
+  "success": true,
+  "data": {
+    "symbol": "BTC",
+    "name": "Bitcoin",
+    "price": 43500.00,
+    "change_24h": 2.5,
+    "market_cap": 850000000000
+  },
+  "message": "Precio actual de Bitcoin"
+}
+```
+
+#### **Top criptomonedas:**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "price": 43500.00,
+      "change_24h": 2.5,
+      "market_cap": 850000000000
+    },
+    {
+      "symbol": "ETH",
+      "name": "Ethereum",
+      "price": 2680.00,
+      "change_24h": -1.2,
+      "market_cap": 320000000000
+    }
+  ],
+  "message": "Top 2 criptomonedas por market cap"
+}
+```
+
+#### **Comparar criptomonedas:**
+```json
+{
+  "success": true,
+  "data": {
+    "crypto1": {
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "price": 43500.00,
+      "change_24h": 2.5,
+      "market_cap": 850000000000
+    },
+    "crypto2": {
+      "symbol": "ETH",
+      "name": "Ethereum",
+      "price": 2680.00,
+      "change_24h": -1.2,
+      "market_cap": 320000000000
+    },
+    "comparison": {
+      "price_difference": 40820.0,
+      "price_ratio": 16.23,
+      "market_cap_difference": 530000000000,
+      "change_24h_difference": 3.7
+    }
+  },
+  "message": "Comparación entre Bitcoin y Ethereum"
+}
+```
+
+## 🚀 **Guía Rápida para Desarrolladores**
+
+### **🔗 URLs Principales**
+- **API Base**: `https://bitcoins-api.vercel.app`
+- **Documentación**: `https://bitcoins-api.vercel.app/docs`
+- **Health Check**: `https://bitcoins-api.vercel.app/health`
+
+### **📋 Endpoints Disponibles**
+| Endpoint | Método | Descripción | Ejemplo |
+|----------|--------|-------------|---------|
+| `/crypto/{symbol}` | GET | Precio de una cripto | `/crypto/BTC` |
+| `/crypto/top/{limit}` | GET | Top criptos por market cap | `/crypto/top/10` |
+| `/crypto/compare/{symbol1}/{symbol2}` | GET | Comparar dos criptos | `/crypto/compare/BTC/ETH` |
+| `/crypto/` | GET | Todas las criptos | `/crypto/` |
+
+### **⚡ Uso Rápido**
+```bash
+# Test rápido
+curl https://bitcoins-api.vercel.app/crypto/BTC
+
+# En JavaScript
+fetch('https://bitcoins-api.vercel.app/crypto/BTC')
+  .then(r => r.json())
+  .then(console.log)
 ```
 
 ## 📚 Documentación
 
-Una vez desplegada, la API incluye:
+La API incluye documentación completa:
 
-- **Swagger UI**: `/docs` - Documentación interactiva
-- **ReDoc**: `/redoc` - Documentación alternativa
-- **Página principal**: `/` - Guía de uso HTML
+- **🌐 Página principal**: [https://bitcoins-api.vercel.app/](https://bitcoins-api.vercel.app/) - Guía de uso HTML
+- **📖 Swagger UI**: [https://bitcoins-api.vercel.app/docs](https://bitcoins-api.vercel.app/docs) - Documentación interactiva
+- **📚 ReDoc**: [https://bitcoins-api.vercel.app/redoc](https://bitcoins-api.vercel.app/redoc) - Documentación alternativa
+- **❤️ Health Check**: [https://bitcoins-api.vercel.app/health](https://bitcoins-api.vercel.app/health) - Estado de la API
 
 ## 🧪 Testing
 
+### **Local:**
 ```bash
 # Ejecutar con uv
 uv run python main.py
@@ -183,22 +306,36 @@ uv run python main.py
 curl http://localhost:8000/health
 ```
 
+### **Producción:**
+```bash
+# Health check
+curl https://bitcoins-api.vercel.app/health
+
+# Test endpoints
+curl https://bitcoins-api.vercel.app/crypto/BTC
+curl https://bitcoins-api.vercel.app/crypto/top/5
+curl https://bitcoins-api.vercel.app/crypto/compare/BTC/ETH
+```
+
 ## 🔒 Consideraciones de Seguridad
 
-- CORS configurado para permitir acceso desde cualquier origen
-- En producción, considera restringir orígenes específicos
-- Los datos son mock, no hay información real de mercado
-- SQLite es adecuado para desarrollo y testing
+- ✅ **CORS habilitado** - Acceso desde cualquier origen
+- ✅ **Datos mock** - No hay información real de mercado
+- ✅ **Sin autenticación** - API pública para testing
+- ✅ **Rate limiting** - Considera implementar en producción
+- ✅ **HTTPS** - Comunicación segura en Vercel
 
 ## 📈 Próximas Mejoras
 
-- [ ] Integración con API real de criptomonedas
-- [ ] Autenticación y autorización
-- [ ] Rate limiting
-- [ ] Cache con Redis
-- [ ] Tests unitarios y de integración
-- [ ] Logging estructurado
-- [ ] Métricas y monitoreo
+- [ ] **Integración con API real** - CoinGecko, CoinMarketCap
+- [ ] **Autenticación JWT** - Para endpoints protegidos
+- [ ] **Rate limiting** - Control de requests por IP
+- [ ] **Cache con Redis** - Mejor rendimiento
+- [ ] **Tests unitarios** - pytest y coverage
+- [ ] **Logging estructurado** - Monitoreo de errores
+- [ ] **Métricas** - Prometheus y Grafana
+- [ ] **WebSocket** - Precios en tiempo real
+- [ ] **Histórico de precios** - Base de datos temporal
 
 ## 🤝 Contribuir
 
